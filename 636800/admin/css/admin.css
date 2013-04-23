@@ -1,0 +1,238 @@
+@charset "utf-8";
+/* A CSS document for the admin pages of the Shopping cart website 
+by Aidan O'Leary */
+
+/* resetting styles */
+* {
+	margin:0px;
+	padding:0px;
+}
+
+/* classes */
+/* ---------- */
+
+.clear_both {
+	clear:both;
+}
+
+/* clear-fix by Nicolas Gallaghe*/
+.cf:before,
+.cf:after {
+	content:" ";
+	display:table;
+}
+
+.clear:after {
+	clear:both;
+}
+
+/* clearfix support for IE 6/7 */
+.cf {
+	*zoom:1;
+}
+
+
+/* basic styling */
+/* ---------- */
+
+body {
+	font-family: Arial, Verdana, Geneva, sans-serif;
+	font-size:16px;
+	width:1000px;
+	margin:0 auto;
+}
+
+
+div#main_wrapper {
+	width:960px;
+	overflow:hidden;
+	margin:0 auto;
+	background-color:#99FF00;
+}
+
+
+/* Header Styling */
+/* -------------- */
+
+/* might need to get rid of overflow hidden */
+header#main_header {
+	width:960px;
+	margin:0 auto;
+	/* overflow:hidden; */
+	background-color:#69C;
+}
+
+#main_header img {
+	float:left;
+	margin-right:30px;	
+}
+
+h1#main_header_text {
+	margin-top:30px;
+}
+
+/* Footer Styling */
+/* -------------- */
+
+footer#main_footer {
+	width:960px;
+	margin:0 auto;
+	background-color:#69C;
+}
+
+/* Page Content */
+/* ------------ */
+#page_content {
+	width:960px;
+	margin:0 auto;
+	clear:both;
+	min-height:600px;
+	background-color:#CCC;
+	display:block;
+}
+
+#page_content p {
+	width:500px;
+	margin:0 auto;		
+}
+
+#page_title {
+	text-align:center;
+	width:500px;
+	margin:15px auto 15px auto;
+}
+
+/* admin section of the website */
+/* ---------------------------- */
+
+/* Admin Navigation */
+/* ---------------- */
+
+nav#admin_nav {
+	clear:both;
+	margin:0px auto;
+	width:100%;
+	display:block;
+	background-color:#FF0;
+	overflow:hidden;
+	
+	
+}
+
+nav#admin_nav ul {
+	clear:both;
+	
+}
+
+nav#admin_nav li {
+	float:left;
+	list-style:none;
+	position:relative;
+}
+
+
+/* maybe add with to a href instead */
+nav#admin_nav ul li a {
+	text-align:centre;	
+	text-decoration:none;
+	font-weight:bold;
+	height:30px;
+	display:block;
+	padding:10px;
+}
+
+
+/* Admin add sections */
+/* ------------------------- */
+#form_add_product, #form_add_category, #form_edit_product {
+	width:600px;
+	padding:15px;
+	margin:30px auto;
+	border:#000000 thin solid;
+	background-color:#CCCCCC;	
+}
+
+#form_add_product fieldset, #form_add_category fieldset, form_edit_product fieldset {
+	background-color:#CCCCCC;
+	border:#000000 thin solid;	
+}
+
+#form_add_product fieldset legend, #form_add_category fieldset legend, #form_edit_product fieldset legend {
+	margin-left: 10px;
+	font-weight:bold;	
+}
+
+#form_add_product p, #form_add_category p, form_edit_product p {
+	margin:10px 0px 10px 0px;
+}
+
+#form_add_product label, #form_add_category label, #form_edit_product label {
+	width:200px;
+	margin-right:15px;
+	float:left;
+	display:block;
+	text-align:right;
+}
+
+#category_list {
+	width:200px;	
+}
+
+#submit_button {
+	width:60px;
+	height:30px;
+	margin:0px 0px 10px 150px;	
+}
+
+/* Admin view product section */
+div#information_1 {
+	border:#000000 medium dashed;
+	background:#FFFFFF;
+	text-align:center;
+	width:500px;
+	padding:10px 0px 10px 0px;
+	margin:10px auto 10px auto;	
+}
+
+div#table_wrapper a{
+	background-color:#CCC;
+	width:500px;
+}
+
+div#products p {
+	text-align:center;
+	margin:0 auto;	
+}
+
+#product_table {
+	margin:0 auto;
+	border-collapse:collapse;
+	background-color:#FFFFFF;
+}
+
+#product_table tr td, #product_table tr th {
+	border:#000000 medium solid;
+	padding:10px;
+}
+
+#product_table tr td button {
+	padding:5px;	
+}
+
+/* Admin view category section */
+
+#categories p {
+	text-align:center;
+	margin:0 auto;	
+}
+
+#category_table {
+	margin:0 auto;
+	border-collapse:collapse;
+	background-color:#FFFFFF;	
+}
+
+#category_table tr td, #category_table tr th {
+	border:#000000 medium solid;
+	padding:15px;	
+}
