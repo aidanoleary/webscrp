@@ -191,7 +191,7 @@ div#products {
 	margin: 15px auto;
 	min-height:500px;
 	background-color:#FFFFFF;
-	border:medium #000000 solid;	
+	border:#CCCCCC medium solid;	
 }
 
 #product_image {
@@ -207,7 +207,8 @@ div#products {
 	min-height:200px;
 	margin-top:15px;
 	margin-bottom:15px;
-	background-color:#0099FF;
+	background-color:#FFFFFF;
+	border:#CCCCCC medium solid;
 	float:left;
 }
 
@@ -237,7 +238,17 @@ div#products {
 	min-height:100px;
 	margin-left: 15px;
 	clear:both;
-	border:#000000 medium solid;
+	border:#CCCCCC medium solid;
+}
+
+/* multiple page Basket Buttons */
+/* -------------------------- */
+#add_basket_button {
+	padding:5px;
+}
+
+#empty_basket_button {
+	padding:5px;	
 }
 
 /* Basket page */
@@ -286,8 +297,7 @@ div#products {
 #basket_page_buttons a {
 	text-decoration:none;
 	padding:10px;
-	border:#000000 medium outset;	
-	
+	border:#000000 medium outset;
 }
 
 /* Checkout Page */

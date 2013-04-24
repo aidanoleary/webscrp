@@ -236,3 +236,18 @@ div#products p {
 	border:#000000 medium solid;
 	padding:15px;	
 }
+
+/* Orders page */
+#orders_table {
+	font-size:10pt;
+}
+
+#orders_table tr {
+		
+	
+}
+
+#orders_table th, td {
+	padding: 10px;
+	border-bottom:#000000 thin solid;
+}

@@ -23,7 +23,7 @@
                     <li><a href="/636800/admin/product/add_product/">Add a product</a></li>
                     <li><a href="/636800/admin/category/add_category/">Add a category</a></li>
                     <li><a href="#">Check stock</a></li>
-                    <li><a href="#">View orders</a></li>
+                    <li><a href="/636800/admin/order/">Orders</a></li>
                 </ul>
 			</nav>
 		</header>

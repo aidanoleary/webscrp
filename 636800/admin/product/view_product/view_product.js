@@ -111,4 +111,4 @@ function editProduct(button) {
 }
 
 
-setInterval(fetch, 5000);
+setInterval(fetch, 3000);

@@ -38,6 +38,7 @@
 		}
 		
 	}
+
 	
 	function display_basket_items() {
 		
