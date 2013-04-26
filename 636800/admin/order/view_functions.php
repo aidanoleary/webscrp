@@ -1,7 +1,8 @@
 <?php
 	//This is a php file that will be retrieved using Ajax to update the orders page every
 	//5 seconds.
-
+	view_orders();
+	
 	function view_orders() {
 		$root = $_SERVER['DOCUMENT_ROOT'];
 		$config_location = $root . "/636800/admin/common/db_config.php";
@@ -31,7 +32,8 @@
 		//Create the sql query to retrieve the order details from the database.
 		$sql = "SELECT * FROM tbl_order, tbl_order_item, tbl_product 
 				WHERE tbl_order.o_id=tbl_order_item.o_id 
-				AND tbl_product.p_id=tbl_order_item.p_id";
+				AND tbl_product.p_id=tbl_order_item.p_id
+                ORDER BY o_date DESC";
 
 		$result = $db->query($sql);
 		if(!$result) die("query unsuccessful. " . $db->error);

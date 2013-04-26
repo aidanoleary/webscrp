@@ -2,11 +2,15 @@
 	session_start('basket');
 ?>
 <?php
+	
+	//This file contains all the functions that deal with the processing of the form containing the customers
+	//details. 
 
-	//This is a function that checks if a post request has been receieved if it hasn't a form is generated.
-	//If a post request has been received the customers order is set up the in the sql database, 
-	//their basket is cleared and they are informed their order has been processed.
+	//This is a function that deals with the server side validation of customer form.
+	//If the form is valid the database tables will be updated to reflect the customers order
+	//otherwise an appropiate error message is displayed.  
 	function checkout_form() {
+                $html = "";
 		if((isset($_POST['first_name']) 
 			&& isset($_POST['surname']) 
 			&& isset($_POST['phone'])
@@ -16,71 +20,174 @@
 			&& isset($_POST['country'])
 			&& isset($_SESSION['basket'])
 			&& count($_SESSION['basket']) > 0)) {
+				
+				//create the validation variable which notifies the user where they have made a mistake
+				$fail = validateFirstname($_POST['first_name']);
+				$fail .= validateSurname($_POST['surname']);
+				$fail .= validatePhone($_POST['phone']);
+				$fail .= validateStreet($_POST['street']);
+				$fail .= validateCity($_POST['city']);
+				$fail .= validatePostcode($_POST['postcode']);
+				$fail .= validateCountry($_POST['country']);
 
-			include('../common/db_config.php');
-			$db = new mysqli($db_host, $db_username, $db_password, $db_database);
-	                if($db->connect_errno > 0) die ("unable to connect to the database." . $db->connect_error);
+				if($fail == "") {
+					//Connect to the database
+					$root = $_SERVER['DOCUMENT_ROOT'];
+					$config_file = $root . "/636800/common/db_config.php";
+					require $config_file;
+					$db = new mysqli($db_host, $db_username, $db_password, $db_database);
+					if($db->connect_errno > 0) die ("unable to connect to the database." . $db->connect_error);
 
-			$firstname = $db->escape_string($_POST['first_name']);
-			$lastname = $db->escape_string($_POST['surname']);
-			$phone = $db->escape_string($_POST['phone']);
-			$street = $db->escape_string($_POST['street']);
-			$city = $db->escape_string($_POST['city']);
-			$postcode = $db->escape_string($_POST['postcode']);
-			$country = $db->escape_string($_POST['country']);
-	                $date = "now()";
-	                $status = "pending";
+					//Gather variables from the form.
+					$firstname = $db->escape_string($_POST['first_name']);
+					$lastname = $db->escape_string($_POST['surname']);
+					$phone = $db->escape_string($_POST['phone']);
+                                        $street = $db->escape_string($_POST['street']);
+                                        $city = $db->escape_string($_POST['city']);
+                                        $postcode = $db->escape_string($_POST['postcode']);
+                                        $country = $db->escape_string($_POST['country']);
+                                        
+                                        $date = "now()";
+                                        $status = "pending";
 
-			$sql1 = "INSERT INTO tbl_order(o_date, o_last_update, o_status, o_first_name,
-	                        o_last_name, o_phone, o_address_street, o_address_city, o_address_postcode,
-	                        o_address_country) VALUES($date, $date, '$status', '$firstname', '$lastname', '$phone',
-	                        '$street', '$city', '$postcode', '$country')";
-	                
-	       	$result = $db->query($sql1);
-	                
-	                
-	        $order_id = $db->insert_id;
-	        if(!$result) die ("query unsuccessful." . $db->error);
-	                
-	        if(isset($_SESSION['basket']) && count($_SESSION['basket']) > 0) {
-	        	$sql2 = "";
-	            foreach($_SESSION['basket'] as $item) {
-	                    $item_id = $item['item_id'];
-	                    $quantity = $item['quantity'];
-	                    $sql2 = "INSERT INTO tbl_order_item(p_id, o_id, o_quantity) VALUES ($item_id, $order_id, $quantity)";
-	                    $result = $db->query($sql2);
-	                    if(!$result) die ("query unsuccessful." . $db->error);
-	            }
-	                    
-	       	}
-	                
-	        $db->close();
-	        unset($_SESSION['basket']);
-			$html = "<h2>Your ordered has been processed and your basket has been emptied.</h2> <a href='/636800/'>return to Homepage</a>\n";
-			return $html;
+                                        
+
+
+                                        
+                                        //Set up and perform the sql query.
+                                        $sql1 = "INSERT INTO tbl_order(o_date, o_last_update, o_status, o_first_name,
+                                        o_last_name, o_phone, o_address_street, o_address_city, o_address_postcode,
+                                        o_address_country) VALUES($date, $date, '$status', '$firstname', '$lastname', '$phone',
+                                        '$street', '$city', '$postcode', '$country')";
+                                        
+                                        $result = $db->query($sql1);
+					if(!$result) die ("query unsuccessful." . $db->error);
+                                        
+                                        $order_id = $db->insert_id;
+                                        if(!$result) die ("query unsuccessful." . $db->error);
+
+
+                                        //Loop section to insert the the order into the order item table and update quantity.
+                                        if(isset($_SESSION['basket']) && count($_SESSION['basket']) > 0) {
+                                            $sql2 = "";
+                                            foreach($_SESSION['basket'] as $item) {
+                                                    $item_id = $item['item_id'];
+                                                    $quantity = $item['quantity'];
+
+                                                    //sql statement that updates the quantity of items to reflect the order
+                                                    $sql_update_quantity = "UPDATE tbl_product SET p_quantity=p_quantity-$quantity";
+                                                    $result = $db->query($sql_update_quantity);
+                                                    if(!$result) die ("query unsuccessful." . $db_error);
+
+                                                    $sql2 = "INSERT INTO tbl_order_item(p_id, o_id, o_quantity) VALUES ($item_id, $order_id, $quantity)";
+                                                    $result = $db->query($sql2);
+                                                    if(!$result) die ("query unsuccessful." . $db->error);
+                                            }//end foreach
+                                        }//end if
+                                        
+                                        $db->close();
+                                        unset($_SESSION['basket']);
+                                        $html = "<h2>Your order has been submitted and your basket has been emptied.</h2> <a href='/636800/'>return to homepage</a>\n";
+                                        return $html;
+                                }//end if
+                                else {
+                                    //Display the error message if the user enters something they aren't supposed to.
+                                    $html = "<h2>Your order has failed for the following reasons. $fail</h2> <a href='/636800/checkout/'>return to checkout page</a>";
+                                    return $html;
+                                }
+                        }
+                        else {
+                            $html = "<h2>An error occured.</h2> <a href='/636800/'>return to homepage</a>\n";
+                            return $html;
+                        }
+    }//end function
+	
+	//Validation functions
+	// ************************************
+	
+	//**************************************** complete validation
+	
+	function validateFirstname($field) {
+		if(empty($field)) {
+			return "You haven't entered a firstname.";	
 		}
-		else if(isset($_SESSION['basket']) && count($_SESSION['basket']) > 0) {
-			$html = "<form id='checkout_form' action='/636800/checkout/index.php' method='post' onsubmit='return validate()'>\n";
-			$html .= "	<fieldset>\n";
-			$html .= "		<legend>Checkout Form</legend>\n";
-			$html .= "		<p><label>First Name:</label><input type='text' name='first_name'></input></p>\n";
-			$html .= "		<p><label>Surname:</label><input type='text' name='surname'></input></p>\n";
-			$html .= "		<p><label>Telephone Number:</label><input type='text' name='phone'></input></p>\n";
-			$html .= "		<fieldset>\n";
-			$html .= "			<legend>Address</legend>\n";
-			$html .= "			<p><label>Street</label><input type='text' name='street'></input></p>\n";
-			$html .= "			<p><label>City</label><input type='text' name='city'></input></p>\n";
-			$html .= "			<p><label>Postcode:</label><input type='text' name='postcode'></input></p>\n";
-			$html .= "			<p><label>Country:</label><div id='checkout_countries'></div></p>\n";
-			$html .= "		</fieldset>\n";
-			$html .= "		<input type='submit' value='submit' class='submit_button1'></input>\n";
-			$html .= "	</fieldset>\n";
-			$html .= "</form>\n";
-			return $html;
+		elseif(preg_match("/[^A-Za-z' ]/", $field)) {
+			return "The firstname you entered was invalid. Only letters can be entered.";	
 		}
 		else {
-			$html = "<p>You haven't got any items in your basket.</p> <a href='/636800/'>return to Homepage</a>\n";
-			return $html;
+			return "";	
 		}
 	}
+	
+	function validateSurname($field) {
+		if(empty($field)) {
+			return "You haven't entered a surname.";	
+		}
+		elseif(preg_match("/[^A-Za-z' ]/", $field)) {
+			return "The surname you entered was invalid. Only letters can be entered.";
+		}
+		else {
+			return "";	
+		}	
+	}
+	
+	function validatePhone($field) {
+		if(preg_match("/[^0-9]/", $field)) {
+			return "<p>You haven't entered a valid phone number.</p>";	
+		}
+		elseif(empty($field)) {
+			return "<p>You haven't entered a phone number.</p>";
+		}
+		else {
+			return "";	
+		}
+	}
+	
+	function validateStreet($field) {
+		if(empty($field)) {
+			return "You haven't entered a street.";	
+		}
+		elseif(preg_match("/[^A-Za-z0-9 ]/", $field)) {
+			return "You haven't entered a valid street.";	
+		}
+		else {
+			return "";	
+		}
+	}
+	
+	function validateCity($field) {
+		if(empty($field)) {
+			return "You haven't entered a city.";	
+		}
+		elseif(preg_match("/[^A-Za-z ]/", $field)) {
+			return "The city you entered was invalid. Only letters can be entered.";
+		}
+		else {
+			return "";	
+		}	
+	}
+	
+	function validatePostcode($field) {
+		if(empty($field)) {
+			return "You haven't entered a postcode.";	
+		}
+		elseif(preg_match("/[^A-Za-z0-9 ]/", $field)) {
+			return "The postcode you entered was invalid. Only letters can be entered.";	
+		}
+		else {
+			return "";	
+		}
+		
+	}
+
+	function validateCountry($field) {
+		if($field == '0') {
+			return "You haven't selected a country.";
+		}
+		else {
+			return "";
+		}
+	}
+	
+	//******************** maybe think about validating the country.
 ?>

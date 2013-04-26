@@ -47,7 +47,7 @@ div#main_wrapper {
 	width:960px;
 	overflow:hidden;
 	margin:0 auto;
-	background-color:#99FF00;
+	background-color:#FFFFFF;
 }
 
 
@@ -113,7 +113,7 @@ nav#admin_nav {
 	margin:0px auto;
 	width:100%;
 	display:block;
-	background-color:#FF0;
+	background-color:#CCCCCC;
 	overflow:hidden;
 	
 	
@@ -133,14 +133,24 @@ nav#admin_nav li {
 
 /* maybe add with to a href instead */
 nav#admin_nav ul li a {
-	text-align:centre;	
+	text-align:center;	
 	text-decoration:none;
 	font-weight:bold;
 	height:30px;
 	display:block;
 	padding:10px;
+	border-right:#000000 thin solid;
+	border-bottom:#000000 thin solid;
+	border-top:#000 thin solid;
+	margin:0 auto;
+	width:171px;
 }
 
+/* Admin Hompage */
+#admin_wrapper {
+	width:700px;
+	margin: 20px auto 20px auto;
+}
 
 /* Admin add sections */
 /* ------------------------- */
@@ -205,7 +215,8 @@ div#products p {
 }
 
 #product_table {
-	margin:0 auto;
+	margin:15px auto;
+	font-size:10pt;
 	border-collapse:collapse;
 	background-color:#FFFFFF;
 }
@@ -227,19 +238,27 @@ div#products p {
 }
 
 #category_table {
-	margin:0 auto;
+	margin:15px auto;
+	font-size:10pt;
 	border-collapse:collapse;
-	background-color:#FFFFFF;	
+	background-color:#FFFFFF;
 }
 
 #category_table tr td, #category_table tr th {
 	border:#000000 medium solid;
-	padding:15px;	
+	padding:10px;
+}
+
+#category_table tr td button {
+	padding:5px;	
 }
 
 /* Orders page */
 #orders_table {
 	font-size:10pt;
+	border-collapse:collapse;
+	margin:15px auto 15px auto;
+	background-color:#FFFFFF;
 }
 
 #orders_table tr {
@@ -249,5 +268,6 @@ div#products p {
 
 #orders_table th, td {
 	padding: 10px;
-	border-bottom:#000000 thin solid;
+	border:#000000 thin solid;
+	
 }

@@ -16,6 +16,7 @@
 <meta charset="utf-8">
 <title><?php echo $product_name; ?></title>
 <link href="/636800/css/main.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="/636800/product/individual_product_functions.js"></script>
 </head>
 <body>
 	<div class="main_wrapper">
@@ -26,5 +27,6 @@
         <?php include('../common/footer.php'); ?>
     </div>
     <script src="/636800/scripts/basket_functions.js" type="text/javascript"></script>
+    
 </body>
 </html>

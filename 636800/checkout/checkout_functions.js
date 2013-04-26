@@ -206,7 +206,7 @@ function countriesDropDownMenu(container) {
 		ZIM: "Zimbabwe"
 	};
 	var output = "<select name='country'>\n";
-	output += "<option value=''></option>\n";
+	output += "<option value='0'>Select Country</option>\n";
 	for(var key in countries) {
 		output += "<option value='" + key + "'>" + countries[key] + "</option>\n";
 	}

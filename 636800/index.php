@@ -13,6 +13,11 @@
 	<div class="main_wrapper"> <!-- start main_wrapper -->
     
         <?php include ('common/header.php'); ?>
+        <div id="searchbar_wrapper">
+            	<form action="">
+                	<label for="searchbar">Search: </label><input id="searchbar" type="text" name="searchbar" />
+                </form>
+            </div>
         <?php echo $category_nav; ?>
         <div class="category_page_content"> <!-- start page_content -->
             <div id="products">

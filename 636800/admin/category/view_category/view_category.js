@@ -1,11 +1,9 @@
 // JavaScript Document
 
 // This is the function that will be called by the setInterval method. 
-var fetch = function() {
-	var categoriesRequest;
-	categoriesRequest = viewCategories();
-	
-}
+window.onload = function() {
+	viewCategories();
+};
 
 // This is a function that can be used to call an ajax get request.
 function getRequest(id, file, params) {
@@ -98,6 +96,11 @@ function viewCategories() {
 function deleteCategory(button) {
 	var categoryValue = button.value;
 	postRequest("information_1", "delete_functions.php", "delete_id="+categoryValue);
+}
+
+var fetch = function() {
+	var categoriesRequest;
+	categoriesRequest = viewCategories();
 }
 
 setInterval(fetch, 5000);

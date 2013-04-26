@@ -6,7 +6,7 @@
 			require($root . "/636800/common/db_config.php");
 			$db = new MySQLi($db_host, $db_username, $db_password, $db_database);
 			if($db->connect_errno > 0) die("Unable to connect to mysql. " . $db->connect_error);
-			$sql = "SELECT p_id, p_name, c_name, p_price, p_image, p_details FROM tbl_product, tbl_category WHERE p_id=$product_id AND tbl_product.c_id = tbl_category.c_id";
+			$sql = "SELECT p_id, p_name, c_name, p_price, p_image, p_details, p_quantity FROM tbl_product, tbl_category WHERE p_id=$product_id AND tbl_product.c_id = tbl_category.c_id";
 			$result = $db->query($sql);
 			if($result->num_rows > 0) {
 				while($row = $result->fetch_array(MYSQLI_ASSOC)) {
@@ -16,6 +16,7 @@
 					$price = $row['p_price'];
 					$image = $row['p_image'];
 					$details = $row['p_details'];
+					$quantity = $row['p_quantity'];
 				}
 			}
 			$db->close();
@@ -36,6 +37,10 @@
 			$html .= "			<p>Price:</p>\n";
 			$html .= "			<p>$price</p>\n";
 			$html .= "		</div><!-- end product_price -->\n";
+			$html .= "		<div id='product_quantity'><!-- start product_quantity -->\n";
+			$html .= "			<p>Quantity:</p>\n"; //initialises page
+			$html .= "			<p>$quantity</p>\n";
+			$html .= "		</div><!-- end product_quantity -->\n";
 			$html .= "		<div id='basket_box'>\n";
 			$html .= "			<button id='add_basket_button' name='$product_id'>Add to basket</button>\n";
 			$html .= "			<button id='empty_basket_button'>Empty basket</button>";
@@ -46,6 +51,7 @@
 			$html .= "		<p>Details:</p>\n";
 			$html .= "		<p>$details</p>\n";
 			$html .= "	</div><!-- end product_detail -->\n";
+			$html .= "	<p id='product_page_id'>$id</p>\n";
 			$html .= "</div><!-- end product_info -->\n";
 			
 			return $html;

@@ -14,7 +14,7 @@
                 <legend>Add Category Form</legend>
                     <p><label for="name">Category Name:</label><input type="text" name="name" maxlength="30" /></p>
                     <p><label for="details">Category Details:</label><textarea name="details"></textarea></p>
-                    <p><label for="image">Category Image:</label><input type="file" name="image" /></p>
+                    <!--<p><label for="image">Category Image:</label><input type="file" name="image" /></p> I didn't get rount to implementing this -->
                     <input id="submit_button" type="submit" name="submit" value="submit" />
                 </fieldset>
             </form>

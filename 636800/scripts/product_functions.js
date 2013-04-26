@@ -1,7 +1,7 @@
 // This is a javascript document that is used to deal with the products
-// on the page.
+// and category navigation on the home page. The product data is retrieved
+// in Json format.
 
-// Implement the page change system at a later stage so that when category links are clicked on they redirect.
 
 window.onload = function() {
 	initAll();
@@ -35,7 +35,7 @@ function ajaxRequest() {
 }
 
 
-//A function that is used to retrieve json data using a Ajax request.
+//A function that is used to retrieve json data using an Ajax request.
 function jsonRequest(file, callback, id) {
 	var request;
 	var items;
@@ -73,13 +73,6 @@ var	displayAllProducts = function (jsonData, targetId) {
 
 //A function that display products of a specific category using retrieved json data.
 var displayCategoryProducts = function () {
-	/*
-	var currentPage = window.location;
-	console.log(currentPage);
-	if(!(/636800\/$/.test(currentPage)) && !(/636800\/index.php$/.test(currentPage)) && !(/636800\/index.php#$/.test(currentPage)) && !(/636800\/#$/.test(currentPage))) {
-		window.location = "/636800/";	
-	}
-	*/
 	var url = "/636800/library/category_json.php?category_name=" + this.id;
 	jsonRequest(url, displayAllProducts, 'products');
 	document.title = this.id;
@@ -87,27 +80,9 @@ var displayCategoryProducts = function () {
 }
 
 var displayAllCategory = function () {
-	//Test to see if current page is view product page
-	var currentPage = window.location;
-	console.log(currentPage);
-	
-	/*
-	var pageCheck1 = /636800\/$/.test(currentPage);
-	var pageCheck2 = /636800\/index.php$/.test(currentPage);
-	var pageCheck3 = /636800\/index.php#$/.test(currentPage);
-	var pageCheck4 = /636800\/#$/.test(currentPage);
-	if(pageCheck1 == false && pageCheck2 == false && pagecheck3 == false && pageCheck4 == false) {
-		
-	}
-	
-	if(!(/636800\/$/.test(currentPage)) && !(/636800\/index.php$/.test(currentPage)) && !(/636800\/index.php#$/.test(currentPage)) && !(/636800\/#$/.test(currentPage))) {
-		window.location = "/636800/";	
-	}
-	*/
 	var url = "/636800/library/all_json.php";
 	jsonRequest(url, displayAllProducts, 'products');
-	document.title = "Home";
-	return false;	
+	document.title = "Home";	
 }
 
 
@@ -137,12 +112,36 @@ function categoryListeners() {
 	}
 }
 
-//*************************** for event listeners you need to add in support for other browsers.
-//**************************** Also need to change displayCategoryProducts function so that it stops the interval.
+//A function sets an event Listener on the search bar
+//**************************** couldn't get the search bar working **************
+function searchFunction(evt) {
+	var title = document.title;
+	var search_string = this.value;
+	var url = "";
+	if(title == "Home" && search_string === "") {
+		url = "/636800/library/all_json.php";
+		jsonRequest(url, displayAllProducts, 'products');
+	}
+	else if(title === "Home") {
+		url = "/636800/library/search_json.php?search_string=" + search_string;
+		jsonRequest(url, displayAllProducts, 'products');
+	} 
+	else if(search_string === "") {
+		url = "/636800/library/category_json.php?category_name=" + title;
+		jsonRequest(url, displayAllProducts, 'products');
+	}
+	else {
+		url = "/636800/library/search_json_category.php?category_name=" + title + "&search_string=" + search_string;
+		jsonRequest(url, displayAllProducts, 'products');
+	}
+}
 
 //A function that initialises the page.
 function initAll() {
 	var products = jsonRequest('/636800/library/all_json.php', displayAllProducts, 'products');
 	categoryListeners();
+	//searchBarListener();
+	//var searchbar = document.getElementById('searchbar');
+	//addEvent(searchbar, 'keyup', searchFunction);
 }
 

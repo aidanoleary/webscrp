@@ -76,6 +76,7 @@
 			$fail .= validateDetails($_POST['details']);
 			$fail .= validatePrice($_POST['price']);
 			$fail .= validateQuantity($_POST['quantity']);
+            $fail .= validateCategory($_POST['category']);
 			
 			if($fail == "") {
 				// connect to the database
@@ -203,4 +204,9 @@
 			return "";
 		}	
 	}
+
+    function validateCategory($field) {
+        $message = ($field == "0") ? "<p>No category was selected.</p>" : "";
+        return $message;
+    }
 ?>

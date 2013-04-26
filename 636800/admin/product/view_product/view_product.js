@@ -2,11 +2,10 @@
 // system.
 
 //This part of the script deals with updating and displaying products using AJAX
+window.onload = function() {
+	viewProducts();
+};
 
-var fetch = function() {
-	var productsRequest;
-	productsRequest = viewProducts();
-}
 
 // This is a function that can be used to call an ajax get request.
 function getRequest(id, file, params) {
@@ -70,12 +69,12 @@ function postRequest(id, file, params) {
 
 // This is a function that will allow support for ajaxRequests in old browsers.
 function ajaxRequest() {
-	var request
+	var request;
 	
-	try {
+	if ( XMLHttpRequest){
 		request = new XMLHttpRequest();	
 	}
-	catch(e1) {
+	else {
 		try {
 			request = new ActiveXObject("Msxml2.XMLHTTP");	
 		}
@@ -91,6 +90,8 @@ function ajaxRequest() {
 	}
 	return request;
 }
+
+
 
 // A function that allows the user to view the products in the database by using a AJAX GET request.
 function viewProducts() {
@@ -110,5 +111,9 @@ function editProduct(button) {
 	window.location.href = ("/636800/admin/product/edit_product/index.php?edit_id=" + productValue);	
 }
 
+var fetch = function() {
+	var productsRequest;
+	productsRequest = viewProducts();
+}
 
-setInterval(fetch, 3000);
+setInterval(fetch, 5000);

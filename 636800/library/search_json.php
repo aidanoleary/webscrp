@@ -1,5 +1,6 @@
 <?php
-	$category = $_GET['category_name'];
+	$category_name = $_GET['category_name'];
+	$search_string = $_GET['search_string'];
 
 	$list = array();
 	$root = $_SERVER['DOCUMENT_ROOT'];
@@ -11,7 +12,7 @@
 	if($db->connect_errno > 0) die("unable to connect to mysql." . $db->connect_error);
 
 	//Create an sql string to retrieve the products from the database.
-	$sql = "SELECT p_id, p_name, c_name, p_details, p_price, p_quantity, p_image FROM tbl_product, tbl_category WHERE tbl_product.c_id = tbl_category.c_id AND tbl_category.c_name = '$category'";
+	$sql = "SELECT p_id, p_name, c_name, p_details, p_price, p_quantity, p_image FROM tbl_product, tbl_category WHERE tbl_product.p_name LIKE $search_string";
 	$result = $db->query($sql);
 	if(!$result) die("Query unsuccessful. " . $db->error);
 
@@ -26,6 +27,7 @@
 				'image' => $row['p_image']
 			);
 			array_push($list, $product);
+
 		}
 	}
 
