@@ -98,7 +98,7 @@
 			}
 			
 			$html .= "</table>";
-			$total_cost = number_format($total_cost, 2);
+			$total_cost = number_format($total_cost, 2, ".", ",");
 			$html .= "<div id='basket_total_cost'><h2>Total: £$total_cost</h2></div>";
 			return $html;
 		}

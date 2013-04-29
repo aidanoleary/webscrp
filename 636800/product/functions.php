@@ -51,7 +51,6 @@
 			$html .= "		<p>Details:</p>\n";
 			$html .= "		<p>$details</p>\n";
 			$html .= "	</div><!-- end product_detail -->\n";
-			$html .= "	<p id='product_page_id'>$id</p>\n";
 			$html .= "</div><!-- end product_info -->\n";
 			
 			return $html;

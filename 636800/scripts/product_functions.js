@@ -57,6 +57,26 @@ function jsonRequest(file, callback, id) {
 }
 
 
+function productGetRequest(file, id) {
+	var request;
+	var items;
+	var target = document.getElementById(id);
+	
+	request = ajaxRequest();
+	request.open("GET", file, true);
+	request.send(null);
+	
+	request.onreadystatechange = function() {
+		if(this.readyState === 4) {
+			if(this.status === 200) {
+				target.innerHTML = request.responseText;	
+			}
+		}
+	}
+	
+}
+
+
 //******************************* Callback functions for the jsonRequest function. ****************************************
 
 //A funtion that displays all the products using retrieved json data.
@@ -72,18 +92,61 @@ var	displayAllProducts = function (jsonData, targetId) {
 
 
 //A function that display products of a specific category using retrieved json data.
-var displayCategoryProducts = function () {
+var displayCategoryProducts = function (evt) {
 	var url = "/636800/library/category_json.php?category_name=" + this.id;
 	jsonRequest(url, displayAllProducts, 'products');
-	document.title = this.id;
-	return false;
-}
 
-var displayAllCategory = function () {
+	//change the document title to the category name.
+	document.title = this.id;
+	var newUrl = "/636800/" + this.id;
+	
+	
+
+	//prevent default state not working at the moment.
+	evt.preventDefault();
+
+	//Change name of page using hash
+	//window.location.hash = this.id;
+	
+	//maybe implement history pushstate at a later stage.
+	
+	//maybe remove history replace state
+	//or change it to pop state
+	//At the moment popstate doesn't bring you to the previous state.
+	//history.pushState(null, "", newUrl);
+	//window.onpopstate = jsonRequest(url, displayAllProducts, 'products');
+	
+	//Couldn't implement pop state properly
+	//Popstate event doesn't currently work.
+	//window.removeEventListener('popstate', jsonRequest(url, displayAllProducts, 'products'));
+	//window.addEventListener('popstate', jsonRequest(url, displayAllProducts, 'products'));
+	
+};
+
+var displayAllCategory = function (evt) {
 	var url = "/636800/library/all_json.php";
 	jsonRequest(url, displayAllProducts, 'products');
-	document.title = "Home";	
-}
+
+	//Change the title of the document to reflect 
+	document.title = "Home";
+	
+	
+
+	//prevent default not working
+	evt.preventDefault();
+
+	//maybe implement history pushstate at a later date.
+
+	//maybe remove history push state and replace with
+	//push state.
+	//history.pushState(null, "", "/636800/");
+
+	//Create the popstate so when the users uses the back button it goes back to the category state.
+	//Pop state event doesn't currently work
+	//window.removeEventListener('popstate', jsonRequest(url, displayAllProducts, 'products'));
+	//window.addEventListener('popstate', jsonRequest(url, displayAllProducts, 'products'));
+	//window.onpopstate = jsonRequest('/636800/library/all_json.php', displayAllProducts, 'products');
+};
 
 
 //********************************** Listener functions *********************************
@@ -116,16 +179,30 @@ function categoryListeners() {
 //**************************** couldn't get the search bar working **************
 function searchFunction(evt) {
 	var title = document.title;
-	var search_string = this.value;
+	var searchString = this.value;
+	console.log(searchString);
 	var url = "";
+	if(title === 'Home') {
+		url = "/636800/library/search.php?search_string=" + searchString;	
+		productGetRequest(url, 'products');
+	}
+	else {
+		var category_name = document.title;
+		url = "/636800/library/search.php?search_string=" + searchString + "&category_name=" + category_name;	
+		productGetRequest(url, 'products');
+	}
+	
+	/*
 	if(title == "Home" && search_string === "") {
 		url = "/636800/library/all_json.php";
 		jsonRequest(url, displayAllProducts, 'products');
 	}
 	else if(title === "Home") {
-		url = "/636800/library/search_json.php?search_string=" + search_string;
-		jsonRequest(url, displayAllProducts, 'products');
-	} 
+		url = "/636800/library/search.php?search_string=" + search_string;
+		productGetRequest(url, 'products');
+	}
+	*/
+	/*
 	else if(search_string === "") {
 		url = "/636800/library/category_json.php?category_name=" + title;
 		jsonRequest(url, displayAllProducts, 'products');
@@ -134,6 +211,8 @@ function searchFunction(evt) {
 		url = "/636800/library/search_json_category.php?category_name=" + title + "&search_string=" + search_string;
 		jsonRequest(url, displayAllProducts, 'products');
 	}
+	*/
+
 }
 
 //A function that initialises the page.
@@ -141,7 +220,7 @@ function initAll() {
 	var products = jsonRequest('/636800/library/all_json.php', displayAllProducts, 'products');
 	categoryListeners();
 	//searchBarListener();
-	//var searchbar = document.getElementById('searchbar');
-	//addEvent(searchbar, 'keyup', searchFunction);
+	var searchbar = document.getElementById('searchbar');
+	addEvent(searchbar, 'keyup', searchFunction);
 }
 

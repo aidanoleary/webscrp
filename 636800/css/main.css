@@ -250,10 +250,6 @@ div#products {
 	border: #CCCCCC medium solid;
 }
 
-#product_page_id {
-	display: none;
-}
-
 /* multiple page Basket Buttons */
 /* --------------------------*/
 #add_basket_button {
@@ -298,6 +294,7 @@ div#products {
 	float: right;
 	padding: 15px;
 	border: #CCCCCC medium solid;
+	width: 300px;
 }
 
 #basket_page_buttons {

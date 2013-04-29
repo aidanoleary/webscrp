@@ -69,8 +69,8 @@ function getUrlVars() {
 
 
 function getProductQuantity() {
-	var productId = document.getElementById('product_page_id').innerHTML;
-	getProductRequest("/636800/product/get_quantity.php?product_id=" + productId, "product_quantity", null);
+	var productId = window.location.search;
+	getProductRequest("/636800/product/get_quantity.php" + productId, "product_quantity", null);
 }
 
 //A function that will be used to fetch updates on the page every couple of seconds.
